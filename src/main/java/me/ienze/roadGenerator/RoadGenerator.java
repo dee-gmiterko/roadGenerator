@@ -13,8 +13,8 @@ public class RoadGenerator {
 
     public RoadGenerator() {
 
-        MapLayer<Float> terrain = new TerrainMapLayer(0.04f);
-        MapLayer<Boolean> roads = new RoadGeneratorMapLayer(64, 64, terrain);
+        MapLayer<Float> terrain = new TerrainMapLayer(0.026f);
+        MapLayer<Boolean> roads = new RoadGeneratorMapLayer(128, 128, terrain);
 
         CombineMapLayer output = new CombineMapLayer();
         output.addLayer(roads);
