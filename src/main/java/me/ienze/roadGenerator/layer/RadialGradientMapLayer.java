@@ -7,42 +7,23 @@ import com.flowpowered.noise.module.source.Perlin;
 import me.ienze.twoDimMap.MapLayer;
 import me.ienze.twoDimMap.Vec;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Random;
 
-public class TerrainMapLayer implements MapLayer<Float> {
+public class RadialGradientMapLayer implements MapLayer<Float> {
 
-    private final Plane perlinPlane;
     private Vec size;
+    private Vec center;
+    private float distanceSquared;
 
-    public TerrainMapLayer(int width, int height, float frequency) {
-        this(width, height, frequency, new Random());
+    public RadialGradientMapLayer(int width, int height, int centerX, int centerY, float distance) {
+        this(new Vec(width, height), new Vec(centerX, centerY), distance);
     }
 
-    public TerrainMapLayer(int width, int height, float frequency, Random random) {
-        this(width, height, frequency, random.nextInt());
-    }
-
-    public TerrainMapLayer(int width, int height, float frequency, int seed) {
-        this(new Vec(width, height), frequency, seed);
-    }
-
-    public TerrainMapLayer(Vec size, float frequency, int seed) {
+    public RadialGradientMapLayer(Vec size, Vec center, float distance) {
         this.size = size;
-
-        Perlin perlin = new Perlin();
-        perlin.setFrequency(frequency);
-        perlin.setSeed(seed);
-
-        Abs abs = new Abs();
-        abs.setSourceModule(0, perlin);
-
-        Clamp clamp = new Clamp();
-        clamp.setLowerBound(0.0);
-        clamp.setUpperBound(1.0);
-        clamp.setSourceModule(0, abs);
-
-        this.perlinPlane = new Plane(clamp);
+        this.center = center;
+        this.distanceSquared = distance * distance;
     }
 
     @Override
@@ -62,7 +43,9 @@ public class TerrainMapLayer implements MapLayer<Float> {
 
     @Override
     public Float get(int x, int y) {
-        return (float) perlinPlane.getValue(x, y);
+        float dx = center.x - x;
+        float dy = center.y - y;
+        return Math.max(0.0f, Math.min(1.0f, (dx * dx + dy * dy) / distanceSquared));
     }
 
     @Override
