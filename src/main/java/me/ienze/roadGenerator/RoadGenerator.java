@@ -16,6 +16,9 @@ public class RoadGenerator {
 
         int seed = 421;
 
+        /*
+        Terrain example
+
         MapLayer<Float> terrainValley = new RadialGradientMapLayer(2048, 2048, 1024, 1024, 1024);
         MapLayer<Float> terrain0 = new TerrainMapLayer(2048, 2048, 0.0001f, seed+0);
         MapLayer<Float> terrain1 = new TerrainMapLayer(2048, 2048, 0.001f, seed+1);
@@ -32,16 +35,18 @@ public class RoadGenerator {
         terrain.addLayer(terrain1);
         terrain.addLayer(terrain2);
         terrain.addLayer(terrain5);
+        */
 
-        //MapLayer<Boolean> roads = new RoadGeneratorMapLayer(2048, 2048, terrain);
+        MapLayer<Float> terrain = new TerrainMapLayer(256, 256, 0.01f, seed);
+        MapLayer<Boolean> roads = new RoadGeneratorMapLayer(256, 256, terrain);
 
-//        CombineMapLayer output = new CombineMapLayer();
-//        output.addLayer(terrain);
-//        output.addLayer(roads);
+        CombineMapLayer output = new CombineMapLayer();
+        output.addLayer(roads);
+        output.addLayer(terrain);
 
         try {
             GeneralMapImageWriter writer = new GeneralMapImageWriter();
-            writer.write(terrain, new File("out.png"));
+            writer.write(output, new File("out.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

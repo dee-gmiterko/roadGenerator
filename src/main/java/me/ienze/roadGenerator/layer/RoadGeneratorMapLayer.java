@@ -27,7 +27,7 @@ public class RoadGeneratorMapLayer extends BooleanMapLayer {
 		super(size);
 		this.terrain = terrain;
 
-		int desiredRoadCount = 400;
+		int desiredRoadCount = 800;
 
 		Vec pointer = new Vec(random.nextInt(getWidth()-1), random.nextInt(getHeight()-1));
 		int roadCount = 0;
